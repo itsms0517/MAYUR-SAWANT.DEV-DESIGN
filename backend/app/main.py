@@ -2,11 +2,13 @@ import html
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
@@ -15,7 +17,7 @@ from starlette.responses import Response
 from app.core.config import settings
 from app.core.security import get_password_hash
 from app.db.base import Base
-from app.db.session import engine, SessionLocal
+from app.db.session import engine, SessionLocal, get_db
 from app.models.admin_user import AdminUser
 from app.models.project import Project
 from app.models.testimonial import Testimonial
@@ -178,9 +180,49 @@ def root():
     }
 
 
-@app.get("/api/health")
-def health():
+@app.get("/api/health/live")
+def liveness():
+    """Liveness probe: verifies process is alive and responsive."""
     return {
-        "status": "healthy",
+        "status": "live",
+        "service": settings.PROJECT_NAME,
+        "environment": settings.ENVIRONMENT,
+    }
+
+
+@app.get("/api/health/ready")
+def readiness(db: Session = Depends(get_db)):
+    """Readiness probe: verifies database connectivity and pool health."""
+    try:
+        db.execute(text("SELECT 1"))
+        return {
+            "status": "ready",
+            "database": "connected",
+            "environment": settings.ENVIRONMENT,
+        }
+    except Exception as exc:
+        logger.error("Readiness probe database failure: %s", exc)
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content={
+                "status": "unhealthy",
+                "database": "disconnected",
+                "error": "Database probe failed",
+            },
+        )
+
+
+@app.get("/api/health")
+def health(db: Session = Depends(get_db)):
+    """Combined health endpoint for backwards compatibility."""
+    try:
+        db.execute(text("SELECT 1"))
+        db_status = "healthy"
+    except Exception:
+        db_status = "degraded"
+
+    return {
+        "status": "healthy" if db_status == "healthy" else "degraded",
+        "database": db_status,
         "environment": settings.ENVIRONMENT,
     }

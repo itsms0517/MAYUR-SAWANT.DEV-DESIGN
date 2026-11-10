@@ -18,7 +18,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://mayursawant.dev"),
+  metadataBase: new URL("https://mayurprofile.com"),
   title: {
     default: "Mayur Sawant — Full-Stack Developer & UI/UX Designer",
     template: "%s | Mayur Sawant",
@@ -36,12 +36,12 @@ export const metadata: Metadata = {
     "India",
     "Freelance Web Developer",
   ],
-  authors: [{ name: "Mayur Sawant", url: "https://mayursawant.dev" }],
+  authors: [{ name: "Mayur Sawant", url: "https://mayurprofile.com" }],
   creator: "Mayur Sawant",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://mayursawant.dev",
+    url: "https://mayurprofile.com",
     title: "Mayur Sawant — Full-Stack Developer & UI/UX Designer",
     description:
       "Crafting high-performance web apps, scalable APIs, and distinctive visual identities.",
@@ -75,6 +75,50 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://mayurprofile.com/#person",
+      name: "Mayur Sawant",
+      jobTitle: "Full-Stack Software Engineer & UI/UX Designer",
+      url: "https://mayurprofile.com",
+      image: "https://mayurprofile.com/og-image.png",
+      sameAs: [
+        "https://github.com/itsms0517",
+        "https://linkedin.com/in/mayur-chandanshive-1125293a7/",
+        "https://instagram.com/mayur_0518_",
+      ],
+      knowsAbout: [
+        "Full-Stack Web Development",
+        "Next.js",
+        "React",
+        "FastAPI",
+        "Python",
+        "PostgreSQL",
+        "TypeScript",
+        "Tailwind CSS",
+        "UI/UX Design",
+        "Figma",
+      ],
+      address: {
+        "@type": "PostalAddress",
+        addressCountry: "IN",
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://mayurprofile.com/#website",
+      url: "https://mayurprofile.com",
+      name: "Mayur Sawant — Developer & Designer",
+      publisher: {
+        "@id": "https://mayurprofile.com/#person",
+      },
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -83,6 +127,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} dark`}>
       <body className="min-h-screen bg-background text-ink font-sans antialiased selection:bg-accent selection:text-background">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <Navbar />
         <main className="min-h-[calc(100vh-20rem)]">{children}</main>
         <Footer />

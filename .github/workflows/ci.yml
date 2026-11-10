@@ -2,9 +2,9 @@ name: CI / Test & Build
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, development]
   pull_request:
-    branches: [main, master]
+    branches: [main, master, development]
 
 jobs:
   backend-test:
@@ -53,4 +53,4 @@ jobs:
       - name: TypeScript & Build Check
         run: npm run build
         env:
-          NEXT_PUBLIC_API_URL: "https://api.mayursawant.dev/api"
+          NEXT_PUBLIC_API_URL: "https://mayur-sawant-dev-design-1.onrender.com/api"

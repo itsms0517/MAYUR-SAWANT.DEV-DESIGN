@@ -66,7 +66,7 @@ export function Footer() {
                 <ArrowUpRight className="w-3 h-3 text-muted" />
               </a>
               <a
-                href="https://github.com/mayurchandanshive"
+                href="https://github.com/itsms0517"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-1.5 text-ink/80 hover:text-accent transition-colors"
@@ -100,6 +100,9 @@ export function Footer() {
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-muted gap-4">
           <p>© {currentYear} Mayur Sawant. Built with Next.js, FastAPI & Neon PostgreSQL.</p>
           <div className="flex items-center gap-6">
+            <Link href="/privacy" className="hover:text-ink transition-colors">
+              Privacy Notice
+            </Link>
             <Link href="/sitemap.xml" className="hover:text-ink transition-colors">
               Sitemap
             </Link>

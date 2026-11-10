@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/admin/"],
     },
-    sitemap: "https://mayursawant.dev/sitemap.xml",
+    sitemap: "https://mayurprofile.com/sitemap.xml",
   };
 }

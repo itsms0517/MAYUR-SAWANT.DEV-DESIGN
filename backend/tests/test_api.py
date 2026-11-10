@@ -10,6 +10,29 @@ def test_root():
     assert "service" in response.json()
 
 
+def test_health_combined():
+    response = client.get("/api/health")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "healthy"
+    assert data["database"] == "healthy"
+
+
+def test_health_liveness():
+    response = client.get("/api/health/live")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "live"
+
+
+def test_health_readiness():
+    response = client.get("/api/health/ready")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "ready"
+    assert data["database"] == "connected"
+
+
 def test_get_projects():
     response = client.get("/api/projects")
     assert response.status_code == 200
