@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
-import { Toaster } from "sonner";
+import { Toaster } from "@/components/SonnerToaster";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import "./globals.css";
@@ -86,17 +86,7 @@ export default function RootLayout({
         <Navbar />
         <main className="min-h-[calc(100vh-20rem)]">{children}</main>
         <Footer />
-        <Toaster
-          position="bottom-right"
-          theme="dark"
-          toastOptions={{
-            style: {
-              background: "#121212",
-              border: "1px solid #262626",
-              color: "#F5F5F5",
-            },
-          }}
-        />
+        <Toaster />
       </body>
     </html>
   );
