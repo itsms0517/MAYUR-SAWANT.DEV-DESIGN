@@ -62,7 +62,7 @@ export default function ContactPage() {
 
                 {/* WhatsApp Fast Track */}
                 <a
-                  href="https://wa.me/918369408225?text=Hi%20Mayur,%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project."
+                  href="https://wa.me/919699017847?text=Hi%20Mayur,%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project."
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center gap-3 text-sm text-ink hover:text-accent transition-colors p-2 rounded-lg hover:bg-surface-card"
