@@ -26,9 +26,17 @@ export function ContactForm() {
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Anti-spam bot trap: reject silently if bot filled hidden field
+    if (honeypot) {
+      setSubmitted(true);
+      return;
+    }
+
     const validationErrors = validateContactForm(form);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -71,6 +79,18 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="p-8 sm:p-12 rounded-2xl bg-surface border border-border space-y-6">
+      {/* Anti-spam Honeypot */}
+      <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
+        <input
+          type="text"
+          name="website_url"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       {/* Name */}
       <div className="space-y-2">
         <label htmlFor="name" className="text-xs uppercase tracking-wider text-muted font-semibold">

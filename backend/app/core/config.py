@@ -10,8 +10,14 @@ class Settings(BaseSettings):
     PORT: int = 8000
     API_V1_STR: str = "/api"
 
-    # CORS
-    CORS_ORIGINS: str = "http://localhost:3000,http://127.0.0.1:3000,https://mayursawant.dev"
+    # CORS - Locked down to authorized domains
+    CORS_ORIGINS: str = (
+        "https://mayurprofile.com,"
+        "https://www.mayurprofile.com,"
+        "https://mayur-sawant-dev-design.vercel.app,"
+        "http://localhost:3000,"
+        "http://127.0.0.1:3000"
+    )
 
     @property
     def cors_origins_list(self) -> List[str]:

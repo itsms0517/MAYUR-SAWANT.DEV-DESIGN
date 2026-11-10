@@ -1,6 +1,10 @@
+import logging
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+
 from app.core.security import verify_password, create_access_token
 from app.db.session import get_db
 from app.deps import get_current_admin
@@ -13,19 +17,25 @@ from app.schemas.project import ProjectCreate, ProjectUpdate, ProjectResponse
 from app.schemas.message import MessageResponse
 from app.schemas.testimonial import TestimonialCreate, TestimonialResponse
 
+logger = logging.getLogger("portfolio.admin")
+limiter = Limiter(key_func=get_remote_address)
 router = APIRouter(prefix="/admin", tags=["admin"])
 
 
 # --- Authentication ---
 
 @router.post("/login", response_model=TokenResponse)
-def admin_login(payload: LoginRequest, db: Session = Depends(get_db)):
+@limiter.limit("5/minute")  # Prevent brute force password cracking
+def admin_login(request: Request, payload: LoginRequest, db: Session = Depends(get_db)):
+    client_ip = request.client.host if request.client else "unknown"
     admin = db.query(AdminUser).filter(AdminUser.email == payload.email).first()
     if not admin or not verify_password(payload.password, admin.password_hash):
+        logger.warning("FAILED admin login attempt for '%s' from IP %s", payload.email, client_ip)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
         )
+    logger.info("SUCCESSFUL admin login for '%s' from IP %s", payload.email, client_ip)
     token = create_access_token(subject=admin.email)
     return TokenResponse(access_token=token)
 

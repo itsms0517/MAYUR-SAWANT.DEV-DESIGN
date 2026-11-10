@@ -1,8 +1,16 @@
+import html
 import logging
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 from sqlalchemy.orm import Session
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.requests import Request
+from starlette.responses import Response
 
 from app.core.config import settings
 from app.core.security import get_password_hash
@@ -16,12 +24,15 @@ from app.routers import projects, contact, testimonials, admin
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("portfolio.main")
 
+# Rate Limiter based on client IP
+limiter = Limiter(key_func=get_remote_address)
+
 
 def seed_database(db: Session):
     """Seed initial admin and showcase projects if table is empty."""
     # 1. Admin Seed
-    admin = db.query(AdminUser).first()
-    if not admin:
+    admin_user = db.query(AdminUser).first()
+    if not admin_user:
         logger.info("Seeding initial admin account: %s", settings.INITIAL_ADMIN_EMAIL)
         new_admin = AdminUser(
             email=settings.INITIAL_ADMIN_EMAIL,
@@ -44,8 +55,8 @@ def seed_database(db: Session):
                 result="100 Lighthouse performance, sub-second API responses, and automated Resend email lead pipeline.",
                 tech_stack="Next.js, TypeScript, FastAPI, PostgreSQL, Tailwind CSS, Docker",
                 cover_image="https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
-                live_url="https://mayursawant.dev",
-                repo_url="https://github.com/mayurchandanshive/portfolio",
+                live_url="https://mayurprofile.com",
+                repo_url="https://github.com/itsms0517/MAYUR-SAWANT.DEV-DESIGN",
                 category="dev",
                 featured=True,
             ),
@@ -53,12 +64,12 @@ def seed_database(db: Session):
                 slug="cosmos-brand-visual-system",
                 title="COSMOS 2.0 Brand & Design System",
                 summary="Complete typography-first visual identity, editorial poster series, and modern design tokens.",
-                problem="Brand needed a high-impact, futuristic design identity to stand out in the crowded creative technology space.",
-                solution="Crafted a comprehensive design system featuring custom grid layouts, high-contrast editorial typography, and acid-lime accents.",
+                problem="Brand needed a high-impact, futuristic design identity to stand out in the creative technology space.",
+                solution="Crafted a comprehensive design system featuring custom grid layouts, high-contrast typography, and acid-lime accents.",
                 result="Increased client engagement by 140% and featured in contemporary typography publications.",
                 tech_stack="Figma, Adobe Illustrator, Design Systems, Typography",
                 cover_image="https://images.unsplash.com/photo-1619632973808-4acf8041df42?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
-                live_url="https://mayursawant.dev/work",
+                live_url="https://mayurprofile.com/projects",
                 category="design",
                 featured=True,
             ),
@@ -71,7 +82,7 @@ def seed_database(db: Session):
                 result="Decreased task completion time by 38% during usability testing.",
                 tech_stack="Figma, UI/UX, Design Tokens, Prototyping",
                 cover_image="https://images.unsplash.com/photo-1686061592689-312bbfb5c055?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
-                live_url="https://mayursawant.dev/work",
+                live_url="https://mayurprofile.com/projects",
                 category="design",
                 featured=False,
             ),
@@ -123,12 +134,31 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS Middleware
+# Connect rate limiter to app state
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+
+# Security Headers Middleware
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        response: Response = await call_next(request)
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
+        return response
+
+
+app.add_middleware(SecurityHeadersMiddleware)
+
+# Locked-down CORS Middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins_list,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],
     allow_headers=["*"],
 )
 
