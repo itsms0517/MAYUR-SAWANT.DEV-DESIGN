@@ -12,7 +12,7 @@ const PACKAGES = [
   {
     name: "Design-to-Code Landing Page",
     tagline: "High-converting web experience built for speed & conversions",
-    price: "$499",
+    price: "₹14,999",
     timeline: "3–5 days",
     icon: Sparkles,
     features: [
@@ -27,7 +27,7 @@ const PACKAGES = [
   {
     name: "Full-Stack Web Application",
     tagline: "Custom platform with secure database, auth, and REST APIs",
-    price: "$1,499",
+    price: "₹39,999",
     timeline: "2–3 weeks",
     featured: true,
     icon: Code,
@@ -36,7 +36,7 @@ const PACKAGES = [
       "FastAPI (Python) backend or Next.js API",
       "Neon PostgreSQL database integration",
       "JWT authentication & admin dashboard",
-      "Cloud Run Dockerized deployment",
+      "Cloud Run or Render deployment",
       "Complete CI/CD GitHub Actions setup",
       "30 days post-launch technical support",
     ],
@@ -44,7 +44,7 @@ const PACKAGES = [
   {
     name: "Complete UI/UX & Brand System",
     tagline: "End-to-end product design, token library, and typography",
-    price: "$899",
+    price: "₹21,999",
     timeline: "1–2 weeks",
     icon: Palette,
     features: [
