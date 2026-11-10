@@ -3,19 +3,12 @@ import { ArrowDownRight, ArrowUpRight, Code2, Sparkles, Layers } from "lucide-re
 
 export function Hero() {
   return (
-    <section className="relative pt-16 pb-24 md:pt-24 md:pb-36 overflow-hidden">
+    <section className="relative pt-8 pb-16 md:pt-14 md:pb-24 overflow-hidden">
       {/* Background Subtle Gradient & Grid */}
       <div className="absolute inset-0 bg-[radial-gradient(#262626_1px,transparent_1px)] [background-size:32px_32px] opacity-25 -z-10" />
       <div className="absolute top-1/4 -left-20 w-96 h-96 bg-accent/5 rounded-full blur-3xl -z-10 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6">
-        {/* Availability Badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface border border-border text-xs text-ink/90 mb-8">
-          <span className="w-2 h-2 rounded-full bg-accent animate-ping" />
-          <span className="font-medium text-accent">Available for New Projects</span>
-          <span className="text-muted">• Q4 2026 / 2027</span>
-        </div>
-
         {/* Primary Headline */}
         <div className="space-y-4 max-w-5xl">
           <h1 className="font-display font-extrabold text-4xl sm:text-6xl lg:text-7xl xl:text-8xl tracking-tight leading-[0.95] uppercase text-ink">
@@ -52,7 +45,7 @@ export function Hero() {
         </div>
 
         {/* Key Stats Strip */}
-        <div className="mt-20 pt-10 border-t border-border grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="mt-14 pt-8 border-t border-border grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-accent">
               <Code2 className="w-4 h-4" />

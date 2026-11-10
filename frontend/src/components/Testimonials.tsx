@@ -10,9 +10,9 @@ export function Testimonials({ testimonials }: TestimonialsProps) {
   if (!testimonials || testimonials.length === 0) return null;
 
   return (
-    <section className="py-24 border-t border-border bg-surface/30">
+    <section className="py-16 md:py-20 border-t border-border bg-surface/30">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="space-y-3 mb-16 text-center max-w-2xl mx-auto">
+        <div className="space-y-3 mb-10 text-center max-w-2xl mx-auto">
           <p className="text-xs uppercase tracking-widest text-accent font-semibold">Testimonials</p>
           <h2 className="font-display font-bold text-3xl sm:text-5xl text-ink uppercase tracking-tight">
             Trusted by founders & design leaders

@@ -17,9 +17,9 @@ export default async function HomePage() {
       <Hero />
 
       {/* Selected Work Section */}
-      <section className="py-24 border-t border-border">
+      <section className="py-16 md:py-20 border-t border-border">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-16 gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
             <div className="space-y-3">
               <p className="text-xs uppercase tracking-widest text-accent font-semibold">Featured Work</p>
               <h2 className="font-display font-bold text-3xl sm:text-5xl text-ink uppercase tracking-tight">
@@ -44,9 +44,9 @@ export default async function HomePage() {
       </section>
 
       {/* Services & Capabilities Bento Grid */}
-      <section className="py-24 border-t border-border bg-surface/20">
+      <section className="py-16 md:py-20 border-t border-border bg-surface/20">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-2xl mx-auto text-center space-y-3 mb-16">
+          <div className="max-w-2xl mx-auto text-center space-y-3 mb-10">
             <p className="text-xs uppercase tracking-widest text-accent font-semibold">What I Deliver</p>
             <h2 className="font-display font-bold text-3xl sm:text-5xl text-ink uppercase tracking-tight">
               Engineering Meets High-Impact Design
@@ -136,7 +136,7 @@ export default async function HomePage() {
       <Testimonials testimonials={testimonials} />
 
       {/* Bottom CTA Banner */}
-      <section className="py-24 border-t border-border">
+      <section className="py-16 md:py-20 border-t border-border">
         <div className="max-w-5xl mx-auto px-6 text-center space-y-8">
           <div className="w-12 h-12 rounded-full bg-accent/20 border border-accent/40 flex items-center justify-center text-accent mx-auto">
             <Zap className="w-6 h-6" />
