@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Plus, Trash2, Mail, CheckCircle, LogOut, RefreshCw, FolderGit2 } from "lucide-react";
+import { Plus, Trash2, Mail, CheckCircle, LogOut, RefreshCw, FolderGit2, Star } from "lucide-react";
 import { Project, ContactResponse } from "@/types";
 
 export default function AdminDashboardPage() {
@@ -29,10 +29,10 @@ export default function AdminDashboardPage() {
     live_url: "",
     repo_url: "",
     category: "dev",
-    featured: false,
+    featured: true,
   });
 
-  const apiBase = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api").replace(/\/$/, "");
+  const apiBase = (process.env.NEXT_PUBLIC_API_URL || "https://mayur-sawant-dev-design-1.onrender.com/api").replace(/\/$/, "");
 
   useEffect(() => {
     const stored = localStorage.getItem("admin_token");
@@ -66,10 +66,16 @@ export default function AdminDashboardPage() {
         setProjects(await projRes.json());
       }
     } catch {
-      toast.error("Error loading dashboard data");
+      toast.error("Network error while connecting to backend");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("admin_token");
+    toast.info("Signed out");
+    router.push("/admin/login");
   };
 
   const handleMarkRead = async (id: number) => {
@@ -80,7 +86,9 @@ export default function AdminDashboardPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
-        setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, is_read: true } : m)));
+        setMessages((prev) =>
+          prev.map((m) => (m.id === id ? { ...m, is_read: true } : m))
+        );
         toast.success("Marked as read");
       }
     } catch {
@@ -138,40 +146,42 @@ export default function AdminDashboardPage() {
         live_url: "",
         repo_url: "",
         category: "dev",
-        featured: false,
+        featured: true,
       });
       toast.success("Project published successfully!");
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Error creating project";
+      const msg = err instanceof Error ? err.message : "Failed to publish project";
       toast.error(msg);
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("admin_token");
-    toast.success("Logged out");
-    router.push("/admin/login");
-  };
+  if (loading) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center">
+        <RefreshCw className="w-6 h-6 text-accent animate-spin" />
+      </div>
+    );
+  }
 
   return (
-    <div className="py-12 md:py-20 max-w-7xl mx-auto px-6 space-y-8">
+    <div className="max-w-6xl mx-auto px-6 py-12 space-y-8">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-border gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border">
         <div>
-          <h1 className="font-display font-bold text-3xl text-ink">Admin Dashboard</h1>
-          <p className="text-xs text-muted">Manage projects and incoming inquiries</p>
+          <h1 className="font-display font-bold text-3xl text-ink">Admin Control Center</h1>
+          <p className="text-xs text-muted">Manage portfolio projects and incoming client leads</p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={() => token && loadData(token)}
-            className="p-2.5 rounded-xl bg-surface border border-border text-muted hover:text-ink transition-colors"
-            title="Refresh"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-surface border border-border text-muted hover:text-ink hover:border-accent transition-colors"
           >
-            <RefreshCw className="w-4 h-4" />
+            <RefreshCw className="w-3.5 h-3.5" />
+            <span>Refresh</span>
           </button>
           <button
             onClick={handleLogout}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-surface border border-border text-red-400 hover:border-red-500 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-surface border border-border text-muted hover:text-red-400 hover:border-red-400/40 transition-colors"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span>Sign Out</span>
@@ -282,86 +292,162 @@ export default function AdminDashboardPage() {
               <h3 className="text-sm font-bold uppercase tracking-wider text-accent">New Project Entry</h3>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input
-                  type="text"
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Title</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Modern E-Commerce Platform"
+                    value={newProject.title}
+                    onChange={(e) => {
+                      const title = e.target.value;
+                      const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
+                      setNewProject({ ...newProject, title, slug });
+                    }}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">URL Slug</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. modern-ecommerce-platform"
+                    value={newProject.slug}
+                    onChange={(e) => setNewProject({ ...newProject, slug: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Short Summary / Tagline</label>
+                <textarea
                   required
-                  placeholder="Title (e.g. Modern E-Commerce Platform)"
-                  value={newProject.title}
-                  onChange={(e) => {
-                    const title = e.target.value;
-                    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
-                    setNewProject({ ...newProject, title, slug });
-                  }}
-                  className="px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
-                />
-                <input
-                  type="text"
-                  required
-                  placeholder="URL Slug (e.g. modern-ecommerce-platform)"
-                  value={newProject.slug}
-                  onChange={(e) => setNewProject({ ...newProject, slug: e.target.value })}
-                  className="px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
+                  rows={2}
+                  placeholder="High-level description of what this product does..."
+                  value={newProject.summary}
+                  onChange={(e) => setNewProject({ ...newProject, summary: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink resize-none"
                 />
               </div>
 
-              <textarea
-                required
-                rows={2}
-                placeholder="Short Summary / Tagline"
-                value={newProject.summary}
-                onChange={(e) => setNewProject({ ...newProject, summary: e.target.value })}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink resize-none"
-              />
+              <div className="space-y-3 pt-2 border-t border-border">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-muted">Deep Dive Case Study Content</h4>
+                
+                <div>
+                  <label className="block text-xs font-semibold text-muted mb-1">01. The Problem &amp; Context</label>
+                  <textarea
+                    rows={2}
+                    placeholder="What user pain point, market challenge, or inefficiency did this project address?"
+                    value={newProject.problem}
+                    onChange={(e) => setNewProject({ ...newProject, problem: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink resize-none"
+                  />
+                </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input
-                  type="url"
-                  required
-                  placeholder="Cover Image URL (Cloudinary, Unsplash)"
-                  value={newProject.cover_image}
-                  onChange={(e) => setNewProject({ ...newProject, cover_image: e.target.value })}
-                  className="px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
-                />
-                <input
-                  type="text"
-                  placeholder="Tech Stack (comma-separated, e.g. Next.js, FastAPI, PostgreSQL)"
-                  value={newProject.tech_stack}
-                  onChange={(e) => setNewProject({ ...newProject, tech_stack: e.target.value })}
-                  className="px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
-                />
+                <div>
+                  <label className="block text-xs font-semibold text-muted mb-1">02. Architecture &amp; The Solution</label>
+                  <textarea
+                    rows={2}
+                    placeholder="How was it designed and engineered? Technical choices, system design, UX flows..."
+                    value={newProject.solution}
+                    onChange={(e) => setNewProject({ ...newProject, solution: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink resize-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-muted mb-1">03. Measurable Impact &amp; Results</label>
+                  <textarea
+                    rows={2}
+                    placeholder="KPIs, performance metrics, Lighthouse scores, user engagement gains..."
+                    value={newProject.result}
+                    onChange={(e) => setNewProject({ ...newProject, result: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink resize-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-border">
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Cover Image URL</label>
+                  <input
+                    type="url"
+                    required
+                    placeholder="https://images.unsplash.com/..."
+                    value={newProject.cover_image}
+                    onChange={(e) => setNewProject({ ...newProject, cover_image: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Tech Stack</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Next.js, FastAPI, PostgreSQL"
+                    value={newProject.tech_stack}
+                    onChange={(e) => setNewProject({ ...newProject, tech_stack: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <input
-                  type="url"
-                  placeholder="Live URL (optional)"
-                  value={newProject.live_url}
-                  onChange={(e) => setNewProject({ ...newProject, live_url: e.target.value })}
-                  className="px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
-                />
-                <input
-                  type="url"
-                  placeholder="GitHub Repo URL (optional)"
-                  value={newProject.repo_url}
-                  onChange={(e) => setNewProject({ ...newProject, repo_url: e.target.value })}
-                  className="px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
-                />
-                <select
-                  value={newProject.category}
-                  onChange={(e) => setNewProject({ ...newProject, category: e.target.value })}
-                  className="px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
-                >
-                  <option value="dev">Full-Stack / Dev</option>
-                  <option value="design">UI/UX & Design</option>
-                </select>
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Live Demo URL</label>
+                  <input
+                    type="url"
+                    placeholder="https://..."
+                    value={newProject.live_url}
+                    onChange={(e) => setNewProject({ ...newProject, live_url: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">GitHub Repo URL</label>
+                  <input
+                    type="url"
+                    placeholder="https://github.com/..."
+                    value={newProject.repo_url}
+                    onChange={(e) => setNewProject({ ...newProject, repo_url: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Category</label>
+                  <select
+                    value={newProject.category}
+                    onChange={(e) => setNewProject({ ...newProject, category: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
+                  >
+                    <option value="dev">Full-Stack / Dev</option>
+                    <option value="design">UI/UX &amp; Design</option>
+                  </select>
+                </div>
               </div>
 
-              <button
-                type="submit"
-                className="px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-accent text-background hover:bg-accent-dark transition-all"
-              >
-                Publish Project
-              </button>
+              <div className="flex items-center gap-2 pt-2">
+                <input
+                  type="checkbox"
+                  id="featured-toggle"
+                  checked={newProject.featured}
+                  onChange={(e) => setNewProject({ ...newProject, featured: e.target.checked })}
+                  className="w-4 h-4 accent-accent rounded"
+                />
+                <label htmlFor="featured-toggle" className="text-xs text-ink font-semibold cursor-pointer">
+                  Feature this project on the Homepage (&quot;Selected Case Studies&quot;)
+                </label>
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-accent text-background hover:bg-accent-dark transition-all"
+                >
+                  Publish Project
+                </button>
+              </div>
             </form>
           )}
 
@@ -372,8 +458,15 @@ export default function AdminDashboardPage() {
                 key={proj.id}
                 className="p-5 rounded-xl bg-surface border border-border flex items-center justify-between gap-4"
               >
-                <div>
-                  <h4 className="font-display font-bold text-base text-ink">{proj.title}</h4>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <h4 className="font-display font-bold text-base text-ink">{proj.title}</h4>
+                    {proj.featured && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/30">
+                        <Star className="w-2.5 h-2.5 fill-accent" /> Featured
+                      </span>
+                    )}
+                  </div>
                   <p className="text-xs text-muted">/{proj.slug} • {proj.category}</p>
                 </div>
                 <button

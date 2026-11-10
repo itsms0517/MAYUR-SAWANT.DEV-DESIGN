@@ -1,9 +1,25 @@
 import { Project, Testimonial, ContactFormValues, ContactResponse } from "@/types";
 
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api").replace(/\/$/, "");
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "https://mayur-sawant-dev-design-1.onrender.com/api").replace(/\/$/, "");
 
 // Fallback data in case backend is waking up or not yet connected during build
 const FALLBACK_PROJECTS: Project[] = [
+  {
+    id: 4,
+    slug: "norgezstay-pg-flat-rental-platform",
+    title: "NorgezStay — PG & Flat Rental Platform",
+    summary: "Modern rental platform for verified PGs and flats featuring real-time search & filters, in-person visit scheduling, live order tracking, and an operations dashboard.",
+    problem: "Finding reliable, verified PG accommodations and flats in urban tech hubs is traditionally plagued by fraudulent listings, opaque broker commissions, and cumbersome physical visit coordination. Users lacked a modern, transparent booking flow with real-time availability and verified amenity checklists.",
+    solution: "Architected an intuitive, high-performance web platform utilizing React 19, Vite, and TypeScript with accessible Tailwind CSS styling. Integrated dynamic search filtering (budget, room sharing, AC/Wi-Fi amenities), interactive visit scheduling, sound-assisted UI feedback using the Web Audio API, and a streamlined administrative dashboard for listing management.",
+    result: "Achieved 98+ Lighthouse performance score, zero-lag client-side filtering across hundreds of listings, and reduced average accommodation discovery and visit scheduling time from days to under 5 minutes.",
+    tech_stack: "React 19, TypeScript, Vite, Tailwind CSS, Lucide Icons, Web Audio API",
+    cover_image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1600&q=80",
+    live_url: "https://norgezstay.vercel.app",
+    repo_url: "https://github.com/Mayur/pg-rental-platform",
+    category: "dev",
+    featured: true,
+    created_at: new Date().toISOString(),
+  },
   {
     id: 1,
     slug: "ai-powered-portfolio-platform",
@@ -14,8 +30,8 @@ const FALLBACK_PROJECTS: Project[] = [
     result: "100 Lighthouse performance, sub-second API responses, and automated Resend email lead pipeline.",
     tech_stack: "Next.js, TypeScript, FastAPI, PostgreSQL, Tailwind CSS, Docker",
     cover_image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
-    live_url: "https://mayursawant.dev",
-    repo_url: "https://github.com/mayurchandanshive/portfolio",
+    live_url: "https://mayurprofile.com",
+    repo_url: "https://github.com/itsms0517/MAYUR-SAWANT.DEV-DESIGN",
     category: "dev",
     featured: true,
     created_at: new Date().toISOString(),
@@ -30,7 +46,7 @@ const FALLBACK_PROJECTS: Project[] = [
     result: "Increased client engagement by 140% and featured in contemporary typography publications.",
     tech_stack: "Figma, Adobe Illustrator, Design Systems, Typography",
     cover_image: "https://images.unsplash.com/photo-1619632973808-4acf8041df42?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
-    live_url: "https://mayursawant.dev/projects",
+    live_url: "https://mayurprofile.com/projects",
     category: "design",
     featured: true,
     created_at: new Date().toISOString(),
@@ -45,7 +61,7 @@ const FALLBACK_PROJECTS: Project[] = [
     result: "Decreased task completion time by 38% during usability testing.",
     tech_stack: "Figma, UI/UX, Design Tokens, Prototyping",
     cover_image: "https://images.unsplash.com/photo-1686061592689-312bbfb5c055?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
-    live_url: "https://mayursawant.dev/projects",
+    live_url: "https://mayurprofile.com/projects",
     category: "design",
     featured: false,
     created_at: new Date().toISOString(),
@@ -60,7 +76,7 @@ export async function fetchProjects(category?: string, featured?: boolean): Prom
 
     const url = `${API_BASE}/projects?${params.toString()}`;
     const res = await fetch(url, {
-      next: { revalidate: 60 }, // ISR: Cache for 60 seconds
+      cache: "no-store",
     });
 
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -77,7 +93,7 @@ export async function fetchProjects(category?: string, featured?: boolean): Prom
 export async function fetchProjectBySlug(slug: string): Promise<Project | null> {
   try {
     const res = await fetch(`${API_BASE}/projects/${slug}`, {
-      next: { revalidate: 60 },
+      cache: "no-store",
     });
     if (!res.ok) {
       if (res.status === 404) return null;
@@ -93,7 +109,7 @@ export async function fetchProjectBySlug(slug: string): Promise<Project | null> 
 export async function fetchTestimonials(): Promise<Testimonial[]> {
   try {
     const res = await fetch(`${API_BASE}/testimonials`, {
-      next: { revalidate: 120 },
+      cache: "no-store",
     });
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     return await res.json();

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { ProjectCard } from "@/components/ProjectCard";
 import { fetchProjects } from "@/lib/api";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Projects & Case Studies",
   description:
@@ -31,7 +34,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
         <div className="max-w-3xl space-y-3 mb-8">
           <p className="text-xs uppercase tracking-widest text-accent font-semibold">Portfolio Gallery</p>
           <h1 className="font-display font-extrabold text-4xl sm:text-6xl text-ink uppercase tracking-tight">
-            Work & Case Studies
+            Work &amp; Case Studies
           </h1>
           <p className="text-muted text-base sm:text-lg leading-relaxed">
             Real products built from concept to production. Filter between engineering and design works below.

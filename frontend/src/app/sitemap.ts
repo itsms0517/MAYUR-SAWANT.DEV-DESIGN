@@ -1,6 +1,8 @@
 import { MetadataRoute } from "next";
 import { fetchProjects } from "@/lib/api";
 
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://mayurprofile.com";
 

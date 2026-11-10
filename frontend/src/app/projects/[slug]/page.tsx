@@ -6,6 +6,9 @@ import { ArrowLeft, ExternalLink, CheckCircle2 } from "lucide-react";
 import { Github } from "@/components/Icons";
 import { fetchProjectBySlug } from "@/lib/api";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 interface CaseStudyProps {
   params: Promise<{ slug: string }>;
 }
@@ -42,6 +45,8 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
   const techStackList = project.tech_stack
     ? project.tech_stack.split(",").map((s) => s.trim())
     : [];
+
+  const hasDetailedSections = Boolean(project.problem || project.solution || project.result);
 
   return (
     <article className="pt-8 pb-16 md:pt-12 md:pb-20">
@@ -112,10 +117,21 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pt-8">
           {/* Main Story: Problem, Solution, Results */}
           <div className="md:col-span-8 space-y-12">
+            {!hasDetailedSections && (
+              <section className="space-y-4">
+                <h2 className="font-display font-bold text-2xl sm:text-3xl text-ink tracking-tight">
+                  01. Project Overview
+                </h2>
+                <p className="text-muted text-base sm:text-lg leading-relaxed whitespace-pre-line">
+                  {project.summary}
+                </p>
+              </section>
+            )}
+
             {project.problem && (
               <section className="space-y-4">
                 <h2 className="font-display font-bold text-2xl sm:text-3xl text-ink tracking-tight">
-                  01. The Problem & Context
+                  01. The Problem &amp; Context
                 </h2>
                 <p className="text-muted text-base sm:text-lg leading-relaxed whitespace-pre-line">
                   {project.problem}
@@ -126,7 +142,7 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
             {project.solution && (
               <section className="space-y-4">
                 <h2 className="font-display font-bold text-2xl sm:text-3xl text-ink tracking-tight">
-                  02. Architecture & The Solution
+                  02. Architecture &amp; The Solution
                 </h2>
                 <p className="text-muted text-base sm:text-lg leading-relaxed whitespace-pre-line">
                   {project.solution}
@@ -139,7 +155,7 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
                 <div className="flex items-center gap-2 text-accent">
                   <CheckCircle2 className="w-5 h-5" />
                   <h2 className="font-display font-bold text-2xl text-ink">
-                    03. Measurable Impact & Results
+                    03. Measurable Impact &amp; Results
                   </h2>
                 </div>
                 <p className="text-ink/90 text-base leading-relaxed whitespace-pre-line">
@@ -153,7 +169,7 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
           <div className="md:col-span-4 space-y-8">
             <div className="p-6 rounded-2xl bg-surface border border-border space-y-6">
               <div className="space-y-2">
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">Role & Discipline</h3>
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">Role &amp; Discipline</h3>
                 <p className="text-sm font-semibold text-ink">
                   {project.category === "dev" ? "Full-Stack Software Engineer" : "Lead UI/UX Designer"}
                 </p>
