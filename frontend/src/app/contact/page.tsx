@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Mail, Linkedin, Instagram, MessageSquare, Clock, ShieldCheck } from "lucide-react";
+import { Mail, MessageSquare, Clock, ShieldCheck } from "lucide-react";
+import { Linkedin } from "@/components/Icons";
 import { ContactForm } from "@/components/ContactForm";
 
 export const metadata: Metadata = {

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowUpRight, Github, Linkedin, Instagram, Mail } from "lucide-react";
+import { ArrowUpRight, Mail } from "lucide-react";
+import { Github, Linkedin, Instagram } from "@/components/Icons";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();

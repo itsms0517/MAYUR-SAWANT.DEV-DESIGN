@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ExternalLink, Github, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, CheckCircle2 } from "lucide-react";
+import { Github } from "@/components/Icons";
 import { fetchProjectBySlug } from "@/lib/api";
 
 interface CaseStudyProps {

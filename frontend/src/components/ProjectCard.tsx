@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, Github, ExternalLink } from "lucide-react";
+import { ArrowUpRight, ExternalLink } from "lucide-react";
+import { Github } from "@/components/Icons";
 import { Project } from "@/types";
 
 interface ProjectCardProps {
