@@ -11,12 +11,12 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="py-20 md:py-32">
+    <div className="pt-8 pb-16 md:pt-12 md:pb-20">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
           {/* Left Column: Context, Direct Links, WhatsApp */}
-          <div className="lg:col-span-5 space-y-8">
-            <div className="space-y-4">
+          <div className="lg:col-span-5 space-y-6">
+            <div className="space-y-3">
               <p className="text-xs uppercase tracking-widest text-accent font-semibold">Start a Conversation</p>
               <h1 className="font-display font-extrabold text-4xl sm:text-6xl text-ink uppercase tracking-tight">
                 Let&apos;s Build Together

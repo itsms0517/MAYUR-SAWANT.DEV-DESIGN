@@ -6,7 +6,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full border-t border-border bg-surface/50 mt-32">
+    <footer className="w-full border-t border-border bg-surface/50 mt-16 md:mt-20">
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-border">
           {/* Col 1: Bio & Value */}

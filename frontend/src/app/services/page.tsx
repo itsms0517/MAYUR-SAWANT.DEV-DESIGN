@@ -60,10 +60,10 @@ const PACKAGES = [
 
 export default function ServicesPage() {
   return (
-    <div className="py-20 md:py-32">
+    <div className="pt-8 pb-16 md:pt-12 md:pb-20">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
-        <div className="max-w-3xl space-y-4 mb-20">
+        <div className="max-w-3xl space-y-3 mb-10">
           <p className="text-xs uppercase tracking-widest text-accent font-semibold">Offerings</p>
           <h1 className="font-display font-extrabold text-4xl sm:text-6xl text-ink uppercase tracking-tight">
             Services & Transparent Packages
@@ -75,7 +75,7 @@ export default function ServicesPage() {
         </div>
 
         {/* Pricing Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {PACKAGES.map((pkg) => {
             const Icon = pkg.icon;
             return (

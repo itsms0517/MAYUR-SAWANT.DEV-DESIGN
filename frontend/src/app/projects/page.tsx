@@ -25,10 +25,10 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
   ];
 
   return (
-    <div className="py-20 md:py-32">
+    <div className="pt-8 pb-16 md:pt-12 md:pb-20">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
-        <div className="max-w-3xl space-y-4 mb-14">
+        <div className="max-w-3xl space-y-3 mb-8">
           <p className="text-xs uppercase tracking-widest text-accent font-semibold">Portfolio Gallery</p>
           <h1 className="font-display font-extrabold text-4xl sm:text-6xl text-ink uppercase tracking-tight">
             Work & Case Studies
@@ -39,7 +39,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
         </div>
 
         {/* Filter Pills */}
-        <div className="flex flex-wrap items-center gap-3 mb-12 pb-6 border-b border-border">
+        <div className="flex flex-wrap items-center gap-3 mb-10 pb-6 border-b border-border">
           {categories.map((cat) => {
             const isActive = categoryFilter === cat.value;
             const href = cat.value ? `/projects?category=${cat.value}` : "/projects";

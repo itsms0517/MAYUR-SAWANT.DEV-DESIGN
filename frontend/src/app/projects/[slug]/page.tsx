@@ -44,8 +44,8 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
     : [];
 
   return (
-    <article className="py-16 md:py-28">
-      <div className="max-w-5xl mx-auto px-6 space-y-16">
+    <article className="pt-8 pb-16 md:pt-12 md:pb-20">
+      <div className="max-w-5xl mx-auto px-6 space-y-10">
         {/* Back Link */}
         <div>
           <Link
