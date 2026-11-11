@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     canonical: "https://mayurprofile.com",
   },
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "",
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "googleb3f82ab4011cbc7d",
   },
   openGraph: {
     type: "website",
