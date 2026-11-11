@@ -6,9 +6,17 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Projects & Case Studies",
+  title: "Projects & Case Studies | Mayur Sawant",
   description:
-    "Explore case studies and shipped projects by Mayur Sawant across Full-Stack Web Development, API Engineering, and UI/UX Design.",
+    "Explore case studies and shipped products by Mayur Sawant across Full-Stack Web Development, Next.js, FastAPI, and UI/UX Design.",
+  alternates: {
+    canonical: "https://mayurprofile.com/projects",
+  },
+  openGraph: {
+    title: "Projects & Case Studies | Mayur Sawant",
+    description: "Explore shipped products and case studies by Mayur Sawant.",
+    url: "https://mayurprofile.com/projects",
+  },
 };
 
 interface ProjectsPageProps {

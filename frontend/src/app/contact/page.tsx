@@ -4,9 +4,17 @@ import { Linkedin } from "@/components/Icons";
 import { ContactForm } from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact & Project Inquiries",
+  title: "Contact & Project Inquiries | Mayur Sawant",
   description:
-    "Get in touch with Mayur Sawant for web engineering contracts, UI/UX design, or consultation. 24-hour reply guaranteed.",
+    "Get in touch with Mayur Sawant for full-stack web engineering, UI/UX design, or technical consulting. Direct email, WhatsApp, and form.",
+  alternates: {
+    canonical: "https://mayurprofile.com/contact",
+  },
+  openGraph: {
+    title: "Contact Mayur Sawant — Full-Stack Developer & UI/UX Designer",
+    description: "Start a conversation about your web engineering or design project. Response within 24 hours.",
+    url: "https://mayurprofile.com/contact",
+  },
 };
 
 export default function ContactPage() {
@@ -86,7 +94,7 @@ export default function ContactPage() {
               </div>
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-accent" />
-                <span>NDA & Client Confidentiality respected</span>
+                <span>NDA &amp; Client Confidentiality respected</span>
               </div>
             </div>
           </div>

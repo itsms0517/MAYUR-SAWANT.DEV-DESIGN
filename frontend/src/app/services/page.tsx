@@ -3,9 +3,17 @@ import Link from "next/link";
 import { Check, ArrowUpRight, Code, Palette, Smartphone, Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Services & Pricing Packages",
+  title: "Services & Pricing Packages | Mayur Sawant",
   description:
-    "Full-Stack Web Development, UI/UX Design, and API Engineering services by Mayur Sawant. Transparent pricing and clear deliverables.",
+    "Full-Stack Web Development, UI/UX Design, and API Engineering services by Mayur Sawant. Transparent pricing and clear deliverables starting at ₹14,999.",
+  alternates: {
+    canonical: "https://mayurprofile.com/services",
+  },
+  openGraph: {
+    title: "Services & Pricing Packages | Mayur Sawant",
+    description: "Full-Stack Web Development & UI/UX Design services starting at ₹14,999.",
+    url: "https://mayurprofile.com/services",
+  },
 };
 
 const PACKAGES = [
@@ -66,7 +74,7 @@ export default function ServicesPage() {
         <div className="max-w-3xl space-y-3 mb-10">
           <p className="text-xs uppercase tracking-widest text-accent font-semibold">Offerings</p>
           <h1 className="font-display font-extrabold text-4xl sm:text-6xl text-ink uppercase tracking-tight">
-            Services & Transparent Packages
+            Services &amp; Transparent Packages
           </h1>
           <p className="text-muted text-base sm:text-lg leading-relaxed">
             Direct collaboration with an engineer-designer. No bloated agency overhead, no miscommunication,
@@ -150,7 +158,7 @@ export default function ServicesPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="p-6 rounded-xl bg-surface border border-border space-y-3">
               <span className="font-display font-bold text-3xl text-accent/60">01</span>
-              <h3 className="font-display font-bold text-lg text-ink">Discovery & Scope</h3>
+              <h3 className="font-display font-bold text-lg text-ink">Discovery &amp; Scope</h3>
               <p className="text-muted text-xs leading-relaxed">
                 Initial consultation to define target KPIs, features, tech stack, and milestone deliverables.
               </p>
@@ -158,7 +166,7 @@ export default function ServicesPage() {
 
             <div className="p-6 rounded-xl bg-surface border border-border space-y-3">
               <span className="font-display font-bold text-3xl text-accent/60">02</span>
-              <h3 className="font-display font-bold text-lg text-ink">Design & Prototype</h3>
+              <h3 className="font-display font-bold text-lg text-ink">Design &amp; Prototype</h3>
               <p className="text-muted text-xs leading-relaxed">
                 Crafting interactive Figma flows, user journeys, and component systems for your sign-off.
               </p>
@@ -174,9 +182,9 @@ export default function ServicesPage() {
 
             <div className="p-6 rounded-xl bg-surface border border-border space-y-3">
               <span className="font-display font-bold text-3xl text-accent/60">04</span>
-              <h3 className="font-display font-bold text-lg text-ink">Launch & Scale</h3>
+              <h3 className="font-display font-bold text-lg text-ink">Launch &amp; Scale</h3>
               <p className="text-muted text-xs leading-relaxed">
-                Production deployment on Vercel & Google Cloud Run, domain setup, and ongoing support.
+                Production deployment on Vercel &amp; Google Cloud Run, domain setup, and ongoing support.
               </p>
             </div>
           </div>

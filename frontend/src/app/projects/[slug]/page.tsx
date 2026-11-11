@@ -23,13 +23,25 @@ export async function generateMetadata({ params }: CaseStudyProps): Promise<Meta
     };
   }
 
+  const canonicalUrl = `https://mayurprofile.com/projects/${project.slug}`;
+
   return {
-    title: project.title,
+    title: `${project.title} — Case Study by Mayur Sawant`,
     description: project.summary,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: `${project.title} — Case Study by Mayur Sawant`,
       description: project.summary,
+      url: canonicalUrl,
       images: [{ url: project.cover_image, alt: project.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} — Case Study by Mayur Sawant`,
+      description: project.summary,
+      images: [project.cover_image],
     },
   };
 }
@@ -48,8 +60,27 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
 
   const hasDetailedSections = Boolean(project.problem || project.solution || project.result);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    name: project.title,
+    description: project.summary,
+    programmingLanguage: project.tech_stack,
+    author: {
+      "@type": "Person",
+      name: "Mayur Sawant",
+      url: "https://mayurprofile.com",
+    },
+    codeRepository: project.repo_url || undefined,
+    url: `https://mayurprofile.com/projects/${project.slug}`,
+  };
+
   return (
     <article className="pt-8 pb-16 md:pt-12 md:pb-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="max-w-5xl mx-auto px-6 space-y-10">
         {/* Back Link */}
         <div>

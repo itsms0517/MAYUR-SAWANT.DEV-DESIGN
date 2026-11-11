@@ -3,9 +3,17 @@ import Link from "next/link";
 import { ArrowLeft, ShieldCheck, Lock, Eye, Clock, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Privacy Notice & Data Governance",
+  title: "Privacy Notice & Data Governance | Mayur Sawant",
   description:
     "Data privacy and protection policy for mayurprofile.com under India's Digital Personal Data Protection (DPDP) Act 2023.",
+  alternates: {
+    canonical: "https://mayurprofile.com/privacy",
+  },
+  openGraph: {
+    title: "Privacy Notice & Data Governance | Mayur Sawant",
+    description: "Data privacy policy under India's DPDP Act 2023.",
+    url: "https://mayurprofile.com/privacy",
+  },
 };
 
 export default function PrivacyPage() {
