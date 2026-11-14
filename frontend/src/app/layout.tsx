@@ -24,19 +24,18 @@ export const metadata: Metadata = {
     template: "%s | Mayur Sawant",
   },
   description:
-    "Official portfolio of Mayur Sawant, senior Full-Stack Software Engineer & UI/UX Designer in India. Building high-performance Next.js web applications, FastAPI backends, and brand design systems.",
+    "Full-stack developer and UI/UX designer based in Mumbai, India. Building responsive web applications with Next.js, React, Python FastAPI, and Figma.",
   keywords: [
     "Mayur Sawant",
-    "Mayur Sawant portfolio",
-    "Mayur Sawant developer",
-    "Mayur Sawant designer",
-    "Full-Stack Developer India",
-    "Freelance Web Developer India",
-    "Next.js Developer India",
-    "FastAPI Python Developer",
-    "React Engineer India",
-    "UI/UX Designer India",
-    "NorgezStay",
+    "Full-Stack Developer",
+    "Next.js Developer",
+    "FastAPI Developer",
+    "React",
+    "Python",
+    "UI/UX Designer",
+    "Figma",
+    "Mumbai",
+    "India",
     "mayurprofile.com",
   ],
   authors: [{ name: "Mayur Sawant", url: "https://mayurprofile.com" }],
@@ -53,7 +52,7 @@ export const metadata: Metadata = {
     url: "https://mayurprofile.com",
     title: "Mayur Sawant — Full-Stack Developer & UI/UX Designer",
     description:
-      "Crafting high-performance web apps, scalable APIs, and distinctive visual identities.",
+      "Full-stack developer and UI/UX designer based in Mumbai, India. Building responsive web applications with Next.js & FastAPI.",
     siteName: "Mayur Sawant Portfolio",
     images: [
       {

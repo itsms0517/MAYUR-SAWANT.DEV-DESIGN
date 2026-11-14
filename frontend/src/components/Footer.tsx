@@ -15,8 +15,7 @@ export function Footer() {
               MAYUR SAWANT<span className="text-accent">.</span>
             </Link>
             <p className="text-muted text-sm max-w-md leading-relaxed">
-              Full-Stack Developer & UI/UX Designer crafting high-performance web applications,
-              scalable APIs, and distinctive visual identities that deliver measurable business results.
+              Full-stack developer and UI/UX designer based in Mumbai, India. Building modern web platforms with Next.js, React, and Python FastAPI.
             </p>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs">
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
