@@ -102,12 +102,6 @@ export function Footer() {
             <Link href="/privacy" className="hover:text-ink transition-colors">
               Privacy Notice
             </Link>
-            <Link href="/sitemap.xml" className="hover:text-ink transition-colors">
-              Sitemap
-            </Link>
-            <Link href="/robots.txt" className="hover:text-ink transition-colors">
-              Robots
-            </Link>
           </div>
         </div>
       </div>
