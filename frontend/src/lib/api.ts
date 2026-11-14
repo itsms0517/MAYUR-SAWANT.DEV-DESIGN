@@ -68,6 +68,20 @@ const FALLBACK_PROJECTS: Project[] = [
   },
 ];
 
+async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = 2500): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, {
+      ...options,
+      signal: controller.signal,
+      next: { revalidate: 60 },
+    });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export async function fetchProjects(category?: string, featured?: boolean): Promise<Project[]> {
   try {
     const params = new URLSearchParams();
@@ -75,9 +89,7 @@ export async function fetchProjects(category?: string, featured?: boolean): Prom
     if (featured !== undefined) params.append("featured", String(featured));
 
     const url = `${API_BASE}/projects?${params.toString()}`;
-    const res = await fetch(url, {
-      cache: "no-store",
-    });
+    const res = await fetchWithTimeout(url);
 
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     return await res.json();
@@ -92,9 +104,7 @@ export async function fetchProjects(category?: string, featured?: boolean): Prom
 
 export async function fetchProjectBySlug(slug: string): Promise<Project | null> {
   try {
-    const res = await fetch(`${API_BASE}/projects/${slug}`, {
-      cache: "no-store",
-    });
+    const res = await fetchWithTimeout(`${API_BASE}/projects/${slug}`);
     if (!res.ok) {
       if (res.status === 404) return null;
       throw new Error(`HTTP error! status: ${res.status}`);
@@ -108,9 +118,7 @@ export async function fetchProjectBySlug(slug: string): Promise<Project | null> 
 
 export async function fetchTestimonials(): Promise<Testimonial[]> {
   try {
-    const res = await fetch(`${API_BASE}/testimonials`, {
-      cache: "no-store",
-    });
+    const res = await fetchWithTimeout(`${API_BASE}/testimonials`);
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     return await res.json();
   } catch (err) {

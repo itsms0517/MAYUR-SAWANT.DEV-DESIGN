@@ -5,8 +5,7 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { Testimonials } from "@/components/Testimonials";
 import { fetchProjects, fetchTestimonials } from "@/lib/api";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function HomePage() {
   const [projects, testimonials] = await Promise.all([

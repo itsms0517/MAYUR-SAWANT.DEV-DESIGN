@@ -4,10 +4,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, CheckCircle2 } from "lucide-react";
 import { Github } from "@/components/Icons";
-import { fetchProjectBySlug } from "@/lib/api";
+import { fetchProjectBySlug, fetchProjects } from "@/lib/api";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const projects = await fetchProjects();
+  return projects.map((p) => ({ slug: p.slug }));
+}
 
 interface CaseStudyProps {
   params: Promise<{ slug: string }>;

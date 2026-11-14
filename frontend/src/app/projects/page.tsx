@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { ProjectCard } from "@/components/ProjectCard";
 import { fetchProjects } from "@/lib/api";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Projects & Case Studies | Mayur Sawant",

@@ -14,7 +14,7 @@ export function Hero() {
           <h1 className="font-display font-extrabold text-4xl sm:text-6xl lg:text-7xl xl:text-8xl tracking-tight leading-[0.95] uppercase text-ink">
             FULL-STACK <span className="text-muted hover:text-ink transition-colors">ENGINEERING</span> &
             <br />
-            <span className="text-accent underline decoration-accent/30 decoration-wavy decoration-2">
+            <span className="text-accent">
               DISTINCTIVE
             </span>{" "}
             UI/UX DESIGN.
