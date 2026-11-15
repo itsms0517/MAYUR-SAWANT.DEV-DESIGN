@@ -94,7 +94,6 @@ const jsonLd = {
       url: "https://mayurprofile.com",
       image: "https://mayurprofile.com/og-image.png",
       sameAs: [
-        "https://github.com/itsms0517",
         "https://linkedin.com/in/mayur-chandanshive-1125293a7/",
         "https://instagram.com/mayur_0518_",
       ],

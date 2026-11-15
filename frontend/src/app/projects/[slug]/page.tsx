@@ -122,17 +122,13 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
                 <ExternalLink className="w-3.5 h-3.5" />
               </a>
             )}
-            {project.repo_url && (
-              <a
-                href={project.repo_url}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-wider bg-surface border border-border text-ink hover:border-accent hover:text-accent transition-all"
-              >
-                <Github className="w-4 h-4" />
-                <span>Source Code</span>
-              </a>
-            )}
+            <span
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-wider bg-surface/50 border border-border/60 text-muted/60 cursor-default"
+              title="GitHub"
+            >
+              <Github className="w-4 h-4" />
+              <span>Source Code</span>
+            </span>
           </div>
         </div>
 
