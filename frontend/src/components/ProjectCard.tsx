@@ -83,17 +83,13 @@ export function ProjectCard({ project, priority = false }: ProjectCardProps) {
             <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
           <div className="flex items-center gap-3">
-            {project.repo_url && (
-              <a
-                href={project.repo_url}
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-ink transition-colors p-1"
-                aria-label="View source code"
-              >
-                <Github className="w-4 h-4" />
-              </a>
-            )}
+            <span
+              className="text-muted/50 p-1 cursor-default"
+              aria-label="GitHub"
+              title="GitHub"
+            >
+              <Github className="w-4 h-4" />
+            </span>
             {project.live_url && (
               <a
                 href={project.live_url}

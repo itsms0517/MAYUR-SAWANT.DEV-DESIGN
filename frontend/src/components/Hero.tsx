@@ -43,14 +43,6 @@ export function Hero() {
             <span>Get in Touch</span>
             <ArrowUpRight className="w-4 h-4" />
           </Link>
-          <a
-            href="https://github.com/itsms0517"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-4 rounded-full text-sm font-semibold uppercase tracking-wider text-muted hover:text-ink transition-colors"
-          >
-            <span>GitHub ↗</span>
-          </a>
         </div>
       </div>
     </section>

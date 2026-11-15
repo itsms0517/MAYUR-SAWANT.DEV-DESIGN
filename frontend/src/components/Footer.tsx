@@ -64,16 +64,13 @@ export function Footer() {
                 <span>LinkedIn</span>
                 <ArrowUpRight className="w-3 h-3 text-muted" />
               </a>
-              <a
-                href="https://github.com/itsms0517"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1.5 text-ink/80 hover:text-accent transition-colors"
+              <span
+                className="inline-flex items-center gap-1.5 text-muted/60 cursor-default"
+                title="GitHub"
               >
                 <Github className="w-4 h-4" />
                 <span>GitHub</span>
-                <ArrowUpRight className="w-3 h-3 text-muted" />
-              </a>
+              </span>
               <a
                 href="https://www.instagram.com/mayur_0518_"
                 target="_blank"
