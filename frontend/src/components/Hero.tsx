@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
-import { Avatar } from "@/components/Avatar";
 
 export function Hero() {
   return (
@@ -12,12 +11,9 @@ export function Hero() {
       <div className="max-w-7xl mx-auto px-6">
         {/* Primary Headline */}
         <div className="space-y-4 max-w-5xl">
-          <div className="flex items-center gap-3">
-            <Avatar size={42} />
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider bg-surface border border-border text-muted">
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-              Available for freelance &amp; full-time • Mumbai, India
-            </div>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider bg-surface border border-border text-muted">
+            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+            Available for freelance &amp; full-time • Mumbai, India
           </div>
 
           <h1 className="font-display font-extrabold text-4xl sm:text-6xl lg:text-7xl xl:text-8xl tracking-tight leading-[0.95] uppercase text-ink">
