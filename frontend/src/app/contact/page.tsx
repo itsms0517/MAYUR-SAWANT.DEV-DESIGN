@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Mail, MessageSquare, Clock, ShieldCheck } from "lucide-react";
+import { MessageSquare, Clock, ShieldCheck, ArrowUpRight } from "lucide-react";
 import { Linkedin } from "@/components/Icons";
 import { ContactForm } from "@/components/ContactForm";
+import { CopyEmailButton } from "@/components/CopyEmailButton";
 
 export const metadata: Metadata = {
   title: "Contact & Project Inquiries | Mayur Sawant",
@@ -40,48 +41,43 @@ export default function ContactPage() {
               <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">Direct Channels</h3>
               
               <div className="space-y-3">
-                <a
-                  href="mailto:mayursawant0517@gmail.com"
-                  className="flex items-center gap-3 text-sm text-ink hover:text-accent transition-colors p-2 rounded-lg hover:bg-surface-card"
-                >
-                  <div className="w-9 h-9 rounded-lg bg-surface-card border border-border flex items-center justify-center text-accent">
-                    <Mail className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted">Email Me Directly</p>
-                    <p className="font-medium">mayursawant0517@gmail.com</p>
-                  </div>
-                </a>
-
-                <a
-                  href="https://linkedin.com/in/mayur-chandanshive-1125293a7/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-3 text-sm text-ink hover:text-accent transition-colors p-2 rounded-lg hover:bg-surface-card"
-                >
-                  <div className="w-9 h-9 rounded-lg bg-surface-card border border-border flex items-center justify-center text-accent">
-                    <Linkedin className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted">LinkedIn Network</p>
-                    <p className="font-medium">Mayur Chandanshive</p>
-                  </div>
-                </a>
+                <CopyEmailButton email="mayursawant0517@gmail.com" />
 
                 {/* WhatsApp Fast Track */}
                 <a
                   href="https://wa.me/919699017847?text=Hi%20Mayur,%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project."
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-3 text-sm text-ink hover:text-accent transition-colors p-2 rounded-lg hover:bg-surface-card"
+                  className="flex items-center justify-between p-3 rounded-xl bg-surface-card border border-border hover:border-accent/50 transition-all group"
                 >
-                  <div className="w-9 h-9 rounded-lg bg-accent/20 border border-accent/40 flex items-center justify-center text-accent">
-                    <MessageSquare className="w-4 h-4" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-accent/15 border border-accent/30 flex items-center justify-center text-accent group-hover:scale-105 transition-transform">
+                      <MessageSquare className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-accent font-semibold">WhatsApp Direct</p>
+                      <p className="text-sm font-medium text-ink group-hover:text-accent transition-colors">Chat on WhatsApp</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-xs text-accent font-semibold">WhatsApp Fast Track</p>
-                    <p className="font-medium">Quick Chat / Voice Call</p>
+                  <ArrowUpRight className="w-4 h-4 text-muted group-hover:text-accent transition-colors pr-1" />
+                </a>
+
+                <a
+                  href="https://linkedin.com/in/mayur-chandanshive-1125293a7/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-between p-3 rounded-xl bg-surface-card border border-border hover:border-accent/50 transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-surface border border-border flex items-center justify-center text-accent group-hover:scale-105 transition-transform">
+                      <Linkedin className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted">LinkedIn Network</p>
+                      <p className="text-sm font-medium text-ink group-hover:text-accent transition-colors">Mayur Chandanshive</p>
+                    </div>
                   </div>
+                  <ArrowUpRight className="w-4 h-4 text-muted group-hover:text-accent transition-colors pr-1" />
                 </a>
               </div>
             </div>

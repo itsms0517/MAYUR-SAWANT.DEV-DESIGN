@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ArrowUpRight, Mail } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Github, Linkedin, Instagram } from "@/components/Icons";
+import { CopyEmailButton } from "@/components/CopyEmailButton";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -81,13 +82,7 @@ export function Footer() {
                 <span>Instagram</span>
                 <ArrowUpRight className="w-3 h-3 text-muted" />
               </a>
-              <a
-                href="mailto:mayursawant0517@gmail.com"
-                className="inline-flex items-center gap-1.5 text-ink/80 hover:text-accent transition-colors"
-              >
-                <Mail className="w-4 h-4" />
-                <span>mayursawant0517@gmail.com</span>
-              </a>
+              <CopyEmailButton email="mayursawant0517@gmail.com" variant="inline" />
             </div>
           </div>
         </div>

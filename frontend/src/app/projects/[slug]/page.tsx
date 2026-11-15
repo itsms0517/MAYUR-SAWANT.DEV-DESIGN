@@ -230,6 +230,14 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
                 >
                   Discuss Your Project
                 </Link>
+                <a
+                  href={`https://wa.me/919699017847?text=Hi%20Mayur,%20I'm%20reading%20your%20${encodeURIComponent(project.title)}%20case%20study%20and%20would%20like%20to%20discuss%20a%20project.`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block text-center py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-surface border border-border text-ink hover:border-accent hover:text-accent transition-all"
+                >
+                  Chat on WhatsApp ↗
+                </a>
               </div>
             </div>
           </div>

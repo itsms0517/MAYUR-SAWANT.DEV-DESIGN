@@ -83,7 +83,7 @@ export default function ServicesPage() {
         </div>
 
         {/* Pricing Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {PACKAGES.map((pkg) => {
             const Icon = pkg.icon;
             return (
@@ -144,6 +144,37 @@ export default function ServicesPage() {
               </div>
             );
           })}
+        </div>
+
+        {/* Custom Scope / Retainer Card */}
+        <div className="p-8 rounded-2xl bg-surface/60 border border-border/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-16">
+          <div className="space-y-2 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full text-xs font-mono uppercase bg-accent/10 border border-accent/20 text-accent">
+              Custom Engagements
+            </div>
+            <h3 className="font-display font-bold text-xl sm:text-2xl text-ink">
+              Need a Custom Scope or Ongoing Monthly Support?
+            </h3>
+            <p className="text-muted text-sm leading-relaxed">
+              If your project doesn&apos;t fit into the fixed packages above, I offer flexible milestone-based contracts, hourly consulting, and dedicated engineering retainers.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <Link
+              href="/contact"
+              className="px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-wider bg-accent text-background hover:bg-accent-dark transition-all"
+            >
+              Request Custom Quote
+            </Link>
+            <a
+              href="https://wa.me/919699017847?text=Hi%20Mayur,%20I%20have%20a%20custom%20project%20I'd%20like%20to%20discuss."
+              target="_blank"
+              rel="noreferrer"
+              className="px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-wider bg-surface border border-border text-ink hover:border-accent hover:text-accent transition-all"
+            >
+              Chat on WhatsApp ↗
+            </a>
+          </div>
         </div>
 
         {/* Process Steps (01-04) */}
