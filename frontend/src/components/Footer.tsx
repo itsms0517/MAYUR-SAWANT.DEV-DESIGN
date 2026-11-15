@@ -97,7 +97,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-muted gap-4">
-          <p>© {currentYear} Mayur Sawant. Built with Next.js, FastAPI & Neon PostgreSQL.</p>
+          <p>© {currentYear} Mayur Sawant.</p>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="hover:text-ink transition-colors">
               Privacy Notice
