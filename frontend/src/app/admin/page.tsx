@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Plus, Trash2, Mail, CheckCircle, LogOut, RefreshCw, FolderGit2, Star } from "lucide-react";
+import { Plus, Trash2, Mail, CheckCircle, LogOut, RefreshCw, FolderGit2, Star, Pencil, X } from "lucide-react";
 import { Project, ContactResponse } from "@/types";
+import CoverImageSelector from "@/components/admin/CoverImageSelector";
 
 export default function AdminDashboardPage() {
   const router = useRouter();
@@ -31,6 +33,9 @@ export default function AdminDashboardPage() {
     category: "dev",
     featured: true,
   });
+
+  // Edit Project Modal
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
 
   const apiBase = (process.env.NEXT_PUBLIC_API_URL || "https://mayur-sawant-dev-design-1.onrender.com/api").replace(/\/$/, "");
 
@@ -151,6 +156,35 @@ export default function AdminDashboardPage() {
       toast.success("Project published successfully!");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Failed to publish project";
+      toast.error(msg);
+    }
+  };
+
+  const handleUpdateProject = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!token || !editingProject) return;
+
+    try {
+      const res = await fetch(`${apiBase}/admin/projects/${editingProject.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(editingProject),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.detail || "Failed to update project");
+      }
+
+      const updated = await res.json();
+      setProjects((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+      setEditingProject(null);
+      toast.success("Project updated successfully!");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to update project";
       toast.error(msg);
     }
   };
@@ -288,7 +322,7 @@ export default function AdminDashboardPage() {
 
           {/* Add Project Form */}
           {showNewProject && (
-            <form onSubmit={handleCreateProject} className="p-6 rounded-2xl bg-surface border border-border space-y-4">
+            <form onSubmit={handleCreateProject} className="p-6 rounded-2xl bg-surface border border-border space-y-5">
               <h3 className="text-sm font-bold uppercase tracking-wider text-accent">New Project Entry</h3>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -369,18 +403,16 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
+              {/* Cover Image Selector with Presets, Upload, and Live Preview */}
+              <div className="pt-2 border-t border-border">
+                <CoverImageSelector
+                  value={newProject.cover_image}
+                  onChange={(url) => setNewProject({ ...newProject, cover_image: url })}
+                  required
+                />
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-border">
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Cover Image URL</label>
-                  <input
-                    type="url"
-                    required
-                    placeholder="https://images.unsplash.com/..."
-                    value={newProject.cover_image}
-                    onChange={(e) => setNewProject({ ...newProject, cover_image: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
-                  />
-                </div>
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Tech Stack</label>
                   <input
@@ -391,9 +423,20 @@ export default function AdminDashboardPage() {
                     className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
                   />
                 </div>
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Category</label>
+                  <select
+                    value={newProject.category}
+                    onChange={(e) => setNewProject({ ...newProject, category: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
+                  >
+                    <option value="dev">Full-Stack / Dev</option>
+                    <option value="design">UI/UX &amp; Design</option>
+                  </select>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Live Demo URL</label>
                   <input
@@ -413,17 +456,6 @@ export default function AdminDashboardPage() {
                     onChange={(e) => setNewProject({ ...newProject, repo_url: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
                   />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Category</label>
-                  <select
-                    value={newProject.category}
-                    onChange={(e) => setNewProject({ ...newProject, category: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
-                  >
-                    <option value="dev">Full-Stack / Dev</option>
-                    <option value="design">UI/UX &amp; Design</option>
-                  </select>
                 </div>
               </div>
 
@@ -458,27 +490,217 @@ export default function AdminDashboardPage() {
                 key={proj.id}
                 className="p-5 rounded-xl bg-surface border border-border flex items-center justify-between gap-4"
               >
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <h4 className="font-display font-bold text-base text-ink">{proj.title}</h4>
-                    {proj.featured && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/30">
-                        <Star className="w-2.5 h-2.5 fill-accent" /> Featured
-                      </span>
-                    )}
+                <div className="flex items-center gap-3.5 min-w-0">
+                  <div className="relative w-16 h-12 rounded-lg overflow-hidden bg-surface-card flex-shrink-0 border border-border">
+                    <Image
+                      src={proj.cover_image}
+                      alt={proj.title}
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                    />
                   </div>
-                  <p className="text-xs text-muted">/{proj.slug} • {proj.category}</p>
+                  <div className="space-y-0.5 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-display font-bold text-base text-ink truncate">{proj.title}</h4>
+                      {proj.featured && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/30 flex-shrink-0">
+                          <Star className="w-2.5 h-2.5 fill-accent" /> Featured
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted truncate">/{proj.slug} • {proj.category}</p>
+                  </div>
                 </div>
-                <button
-                  onClick={() => handleDeleteProject(proj.id)}
-                  className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
-                  title="Delete"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
+                <div className="flex items-center gap-1.5 flex-shrink-0">
+                  <button
+                    onClick={() => setEditingProject(proj)}
+                    className="p-2 text-muted hover:text-accent hover:bg-surface-card rounded-lg transition-colors"
+                    title="Edit Project"
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleDeleteProject(proj.id)}
+                    className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
+                    title="Delete Project"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
+
+          {/* Edit Project Modal */}
+          {editingProject && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+              <div className="bg-surface border border-border rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+                <div className="p-5 border-b border-border flex items-center justify-between">
+                  <h3 className="font-display font-bold text-lg text-ink flex items-center gap-2">
+                    <Pencil className="w-4 h-4 text-accent" />
+                    <span>Edit Project: {editingProject.title}</span>
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setEditingProject(null)}
+                    className="p-2 rounded-xl text-muted hover:text-ink hover:bg-surface-card transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <form onSubmit={handleUpdateProject} className="p-6 overflow-y-auto space-y-5 flex-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Title</label>
+                      <input
+                        type="text"
+                        required
+                        value={editingProject.title}
+                        onChange={(e) => setEditingProject({ ...editingProject, title: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">URL Slug</label>
+                      <input
+                        type="text"
+                        required
+                        value={editingProject.slug}
+                        onChange={(e) => setEditingProject({ ...editingProject, slug: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Short Summary / Tagline</label>
+                    <textarea
+                      required
+                      rows={2}
+                      value={editingProject.summary}
+                      onChange={(e) => setEditingProject({ ...editingProject, summary: e.target.value })}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink resize-none"
+                    />
+                  </div>
+
+                  <div className="space-y-3 pt-2 border-t border-border">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-muted">Case Study Details</h4>
+                    <div>
+                      <label className="block text-xs font-semibold text-muted mb-1">01. Problem &amp; Context</label>
+                      <textarea
+                        rows={2}
+                        value={editingProject.problem || ""}
+                        onChange={(e) => setEditingProject({ ...editingProject, problem: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink resize-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-muted mb-1">02. Architecture &amp; Solution</label>
+                      <textarea
+                        rows={2}
+                        value={editingProject.solution || ""}
+                        onChange={(e) => setEditingProject({ ...editingProject, solution: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink resize-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-muted mb-1">03. Measurable Results</label>
+                      <textarea
+                        rows={2}
+                        value={editingProject.result || ""}
+                        onChange={(e) => setEditingProject({ ...editingProject, result: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink resize-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Cover Image Selector in Edit Form */}
+                  <div className="pt-2 border-t border-border">
+                    <CoverImageSelector
+                      value={editingProject.cover_image}
+                      onChange={(url) => setEditingProject({ ...editingProject, cover_image: url })}
+                      required
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-border">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Tech Stack</label>
+                      <input
+                        type="text"
+                        value={editingProject.tech_stack || ""}
+                        onChange={(e) => setEditingProject({ ...editingProject, tech_stack: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Category</label>
+                      <select
+                        value={editingProject.category}
+                        onChange={(e) => setEditingProject({ ...editingProject, category: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
+                      >
+                        <option value="dev">Full-Stack / Dev</option>
+                        <option value="design">UI/UX &amp; Design</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">Live Demo URL</label>
+                      <input
+                        type="url"
+                        value={editingProject.live_url || ""}
+                        onChange={(e) => setEditingProject({ ...editingProject, live_url: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-1">GitHub Repo URL</label>
+                      <input
+                        type="url"
+                        value={editingProject.repo_url || ""}
+                        onChange={(e) => setEditingProject({ ...editingProject, repo_url: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-surface-card border border-border text-sm text-ink"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-2">
+                    <input
+                      type="checkbox"
+                      id="edit-featured-toggle"
+                      checked={editingProject.featured}
+                      onChange={(e) => setEditingProject({ ...editingProject, featured: e.target.checked })}
+                      className="w-4 h-4 accent-accent rounded"
+                    />
+                    <label htmlFor="edit-featured-toggle" className="text-xs text-ink font-semibold cursor-pointer">
+                      Feature this project on Homepage
+                    </label>
+                  </div>
+
+                  <div className="pt-4 border-t border-border flex items-center justify-end gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setEditingProject(null)}
+                      className="px-5 py-2.5 rounded-full text-xs font-semibold border border-border text-muted hover:text-ink transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-accent text-background hover:bg-accent-dark transition-all"
+                    >
+                      Save Changes
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
