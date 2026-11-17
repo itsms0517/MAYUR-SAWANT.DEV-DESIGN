@@ -56,3 +56,36 @@ def test_contact_validation():
         },
     )
     assert response.status_code == 422
+
+
+def test_image_upload_and_retrieval():
+    from io import BytesIO
+
+    # 1. Login as admin
+    login_res = client.post(
+        "/api/admin/login",
+        json={"email": "mayursawant0517@gmail.com", "password": "Admin@Mayur2026!"},
+    )
+    assert login_res.status_code == 200
+    token = login_res.json()["access_token"]
+
+    # 2. Upload sample image
+    image_bytes = b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15c4"
+    files = {"file": ("test.png", BytesIO(image_bytes), "image/png")}
+    upload_res = client.post(
+        "/api/admin/upload",
+        files=files,
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert upload_res.status_code == 200
+    data = upload_res.json()
+    assert "url" in data
+    assert "id" in data
+    image_id = data["id"]
+
+    # 3. Retrieve uploaded image publicly
+    get_res = client.get(f"/api/images/{image_id}")
+    assert get_res.status_code == 200
+    assert get_res.headers["content-type"] == "image/png"
+    assert get_res.content == image_bytes
+

@@ -1,6 +1,6 @@
 import logging
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile, File, status
 from sqlalchemy.orm import Session
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -12,6 +12,7 @@ from app.models.admin_user import AdminUser
 from app.models.project import Project
 from app.models.message import Message
 from app.models.testimonial import Testimonial
+from app.models.uploaded_image import UploadedImage
 from app.schemas.admin import LoginRequest, TokenResponse, AdminUserResponse
 from app.schemas.project import ProjectCreate, ProjectUpdate, ProjectResponse
 from app.schemas.message import MessageResponse
@@ -150,3 +151,49 @@ def delete_testimonial(
     db.delete(t)
     db.commit()
     return None
+
+
+# --- Media / Image Upload ---
+
+@router.post("/upload")
+async def upload_image(
+    file: UploadFile = File(...),
+    request: Request = None,
+    db: Session = Depends(get_db),
+    _: AdminUser = Depends(get_current_admin),
+):
+    if not file.content_type or not file.content_type.startswith("image/"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Only image files (PNG, JPG, WebP, GIF, SVG) are allowed",
+        )
+
+    data = await file.read()
+    if len(data) > 10 * 1024 * 1024:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Image file size must be under 10MB",
+        )
+
+    img = UploadedImage(
+        filename=file.filename or "uploaded_image.jpg",
+        content_type=file.content_type,
+        data=data,
+    )
+    db.add(img)
+    db.commit()
+    db.refresh(img)
+
+    base_url = "https://mayur-sawant-dev-design-1.onrender.com"
+    if request:
+        req_base = str(request.base_url).rstrip("/")
+        if "localhost" in req_base or "127.0.0.1" in req_base:
+            base_url = req_base
+
+    image_url = f"{base_url}/api/images/{img.id}"
+    return {
+        "url": image_url,
+        "id": img.id,
+        "filename": img.filename,
+    }
+

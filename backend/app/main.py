@@ -21,7 +21,7 @@ from app.db.session import engine, SessionLocal, get_db
 from app.models.admin_user import AdminUser
 from app.models.project import Project
 from app.models.testimonial import Testimonial
-from app.routers import projects, contact, testimonials, admin
+from app.routers import projects, contact, testimonials, admin, images
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("portfolio.main")
@@ -169,6 +169,7 @@ app.include_router(projects.router, prefix=settings.API_V1_STR)
 app.include_router(contact.router, prefix=settings.API_V1_STR)
 app.include_router(testimonials.router, prefix=settings.API_V1_STR)
 app.include_router(admin.router, prefix=settings.API_V1_STR)
+app.include_router(images.router, prefix=settings.API_V1_STR)
 
 
 @app.api_route("/", methods=["GET", "HEAD"])
