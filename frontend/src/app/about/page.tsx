@@ -48,7 +48,7 @@ export default function AboutPage() {
                 and responsive component systems into typed, high-performance Next.js and Python FastAPI applications.
               </p>
               <p>
-                Whether I&apos;m building real-time search filters for platforms like <em>NorgezStay</em> or designing
+                Whether I&apos;m building real-time data flows for full-stack web applications or designing
                 clean design token hierarchies in Figma, I focus on performance, accessibility, and intuitive interactions.
               </p>
             </div>
