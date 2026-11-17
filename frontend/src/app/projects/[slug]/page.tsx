@@ -83,7 +83,7 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
     <article className="pt-8 pb-16 md:pt-12 md:pb-20">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <div className="max-w-5xl mx-auto px-6 space-y-10">
         {/* Back Link */}

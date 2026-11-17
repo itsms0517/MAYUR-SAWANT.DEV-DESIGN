@@ -173,7 +173,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-background text-ink font-sans antialiased selection:bg-accent selection:text-background">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
         />
         <Navbar />
         <main className="min-h-[calc(100vh-20rem)]">{children}</main>

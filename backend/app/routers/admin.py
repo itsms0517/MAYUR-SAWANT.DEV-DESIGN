@@ -1,4 +1,5 @@
 import logging
+import re
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile, File, status
 from sqlalchemy.orm import Session
@@ -155,17 +156,27 @@ def delete_testimonial(
 
 # --- Media / Image Upload ---
 
+ALLOWED_IMAGE_SIGNATURES = {
+    "image/jpeg": (b"\xff\xd8\xff",),
+    "image/png": (b"\x89PNG\r\n\x1a\n",),
+    "image/webp": (b"RIFF",),
+    "image/gif": (b"GIF87a", b"GIF89a"),
+}
+
+
 @router.post("/upload")
+@limiter.limit("20/minute")
 async def upload_image(
+    request: Request,
     file: UploadFile = File(...),
-    request: Request = None,
     db: Session = Depends(get_db),
     _: AdminUser = Depends(get_current_admin),
 ):
-    if not file.content_type or not file.content_type.startswith("image/"):
+    content_type = (file.content_type or "").lower().split(";")[0].strip()
+    if content_type not in ALLOWED_IMAGE_SIGNATURES:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Only image files (PNG, JPG, WebP, GIF, SVG) are allowed",
+            detail="Only raster image files (JPEG, PNG, WebP, GIF) are allowed for cover images",
         )
 
     data = await file.read()
@@ -175,9 +186,23 @@ async def upload_image(
             detail="Image file size must be under 10MB",
         )
 
+    # Magic byte inspection to verify real file format (prevents disguised executables/scripts)
+    valid_signature = any(data.startswith(sig) for sig in ALLOWED_IMAGE_SIGNATURES[content_type])
+    if content_type == "image/webp" and valid_signature:
+        valid_signature = len(data) >= 12 and data[8:12] == b"WEBP"
+
+    if not valid_signature:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid image file contents or corrupted header",
+        )
+
+    raw_filename = file.filename or "cover_image.jpg"
+    safe_filename = re.sub(r"[^a-zA-Z0-9_.-]", "_", raw_filename)[:80]
+
     img = UploadedImage(
-        filename=file.filename or "uploaded_image.jpg",
-        content_type=file.content_type,
+        filename=safe_filename,
+        content_type=content_type,
         data=data,
     )
     db.add(img)

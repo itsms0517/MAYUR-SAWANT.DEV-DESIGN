@@ -87,5 +87,23 @@ def test_image_upload_and_retrieval():
     get_res = client.get(f"/api/images/{image_id}")
     assert get_res.status_code == 200
     assert get_res.headers["content-type"] == "image/png"
+    assert get_res.headers["x-content-type-options"] == "nosniff"
     assert get_res.content == image_bytes
+
+    # 4. Reject SVG / non-raster image (blocks Stored SVG XSS)
+    svg_bytes = b"<svg onload=alert(1)>"
+    bad_upload = client.post(
+        "/api/admin/upload",
+        files={"file": ("malicious.svg", BytesIO(svg_bytes), "image/svg+xml")},
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert bad_upload.status_code == 400
+
+    # 5. Reject spoofed image with invalid magic bytes
+    fake_png = client.post(
+        "/api/admin/upload",
+        files={"file": ("fake.png", BytesIO(b"not a real png header"), "image/png")},
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert fake_png.status_code == 400
 
