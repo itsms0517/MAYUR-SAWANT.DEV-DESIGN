@@ -18,8 +18,7 @@ export const metadata: Metadata = {
   },
 };
 
-const SAMPLE_PORTRAIT_URL =
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80";
+const PORTRAIT_URL = "/mayur.jpg";
 
 export default function AboutPage() {
   return (
@@ -81,19 +80,14 @@ export default function AboutPage() {
             <div className="relative w-full max-w-sm rounded-2xl overflow-hidden bg-surface border border-border p-3 shadow-2xl">
               <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-surface-card border border-border/60">
                 <Image
-                  src={SAMPLE_PORTRAIT_URL}
-                  alt="Mayur Sawant — Developer & Designer"
+                  src={PORTRAIT_URL}
+                  alt="Mayur Sawant — Full-Stack Developer & UI/UX Designer"
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, 400px"
-                  className="object-cover"
+                  className="object-cover object-top"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-                
-                {/* Note badge */}
-                <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-mono uppercase bg-background/90 backdrop-blur-md border border-border text-muted">
-                  Sample Photo Placeholder
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
 
                 <div className="absolute bottom-4 left-4 right-4 space-y-1">
                   <p className="font-display font-bold text-lg text-ink">Mayur Sawant</p>
@@ -103,10 +97,12 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              <div className="mt-3 px-2 py-1 text-center">
-                <p className="text-[11px] text-muted">
-                  💡 Ready to be updated with your real photo anytime!
-                </p>
+              <div className="mt-2.5 px-3 py-1 flex items-center justify-between text-xs text-muted">
+                <span>Based in Mumbai, India</span>
+                <span className="flex items-center gap-1.5 text-accent font-mono text-[11px]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                  Available for Work
+                </span>
               </div>
             </div>
           </div>
