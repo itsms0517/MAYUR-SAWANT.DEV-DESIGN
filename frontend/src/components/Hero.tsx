@@ -11,19 +11,15 @@ export function Hero() {
       <div className="max-w-7xl mx-auto px-6">
         {/* Primary Headline */}
         <div className="space-y-4 max-w-5xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider bg-surface border border-border text-muted">
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            Available for freelance &amp; full-time • Mumbai, India
-          </div>
 
           <h1 className="font-display font-extrabold text-4xl sm:text-6xl lg:text-7xl xl:text-8xl tracking-tight leading-[0.95] uppercase text-ink">
             FULL-STACK <span className="text-muted hover:text-ink transition-colors">DEV</span> &amp;
             <br />
-            <span className="text-accent">UI/UX</span> DESIGN.
+            <span className="text-accent">UI/UX</span> DESIGNER.
           </h1>
 
           <p className="text-base sm:text-xl text-muted max-w-2xl pt-2 font-sans leading-relaxed">
-            Hi, I&apos;m Mayur Sawant. I build responsive web apps with Next.js, React, and Python FastAPI, and design clean, accessible interfaces in Figma.
+            Hi, I’m Mayur Chandanshive, a full-stack developer who builds responsive, accessible web apps with Next.js, React, and FastAPI, backed by PostgreSQL. I also design clean interfaces in Figma, so the product looks right and works end to end.
           </p>
         </div>
 

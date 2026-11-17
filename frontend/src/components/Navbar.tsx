@@ -23,7 +23,7 @@ export function Navbar() {
         {/* Brand / Logo */}
         <Link href="/" className="group flex items-center gap-2">
           <span className="font-display font-bold text-xl tracking-tighter text-ink group-hover:text-accent transition-colors">
-            MAYUR SAWANT<span className="text-accent">.</span>
+            DEVELOPER MAYUR<span className="text-accent">.</span>
           </span>
           <span className="text-xs uppercase tracking-widest text-muted hidden sm:inline-block border-l border-border pl-2">
             DEV & DESIGN

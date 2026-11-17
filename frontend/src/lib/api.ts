@@ -5,6 +5,22 @@ const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "https://mayur-sawant-dev-d
 // Fallback data in case backend is waking up or not yet connected during build
 const FALLBACK_PROJECTS: Project[] = [
   {
+    id: 5,
+    slug: "the-roasted-bean-cafe-ordering-platform",
+    title: "The Roasted Bean — Full-Stack Café Ordering Platform",
+    summary: "Full-stack café digital ordering & table booking web application featuring instant menu search, persistent cart, multi-channel checkout, and a live polling kitchen admin dashboard.",
+    problem: "Boutique cafés struggle with counter queues during peak morning rush, lack of allergen/dietary filters, and manual table reservation management, leading to customer wait times and lost kitchen visibility.",
+    solution: "Built a full-stack digital ordering platform using Next.js 14, TypeScript, Tailwind CSS, and Framer Motion with MongoDB Atlas & Mongoose. Features instant category filtering, persistent localStorage cart with quantity controls, dine-in/takeaway/delivery checkout, table booking, and a real-time polling kitchen dashboard with sound alerts.",
+    result: "Zero-lag client-side menu filtering and cart state, responsive mobile-first ordering flow, and a centralized kitchen management board that streamlines rush-hour dispatch.",
+    tech_stack: "Next.js 14, TypeScript, Tailwind CSS, Framer Motion, MongoDB Atlas, Mongoose, Lucide Icons",
+    cover_image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1600&q=80",
+    live_url: "https://projects-chi-nine-55.vercel.app",
+    repo_url: "",
+    category: "dev",
+    featured: true,
+    created_at: new Date().toISOString(),
+  },
+  {
     id: 4,
     slug: "norgezstay-pg-flat-rental-platform",
     title: "NorgezStay — PG & Flat Rental Platform",
